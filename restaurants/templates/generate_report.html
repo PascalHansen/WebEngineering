@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generate Report</title>
+</head>
+<body>
+    <h1>Generate Report</h1>
+    <form method="post">
+        {% csrf_token %}
+        <!-- Add form fields for selecting criteria (e.g., date range, restaurant location, customer segments) -->
+        <button type="submit">Generate Report</button>
+    </form>
+</body>
+</html>

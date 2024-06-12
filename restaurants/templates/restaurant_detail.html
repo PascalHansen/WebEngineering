@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ restaurant.name }} Details</title>
+</head>
+<body>
+    <h1>{{ restaurant.name }}</h1>
+    <p>Location: {{ restaurant.location }}</p>
+    <p>Cuisine: {{ restaurant.cuisine }}</p>
+    <p>Description: {{ restaurant.description }}</p>
+    <p>Contact Info: {{ restaurant.contact_info }}</p>
+    <p>Opening Hours: {{ restaurant.opening_hours }}</p>
+    <p>Next Available Reservation: {{ restaurant.next_available_reservation }}</p>
+
+    <h2>Menus</h2>
+    <ul>
+        {% for menu in menus %}
+            <li>{{ menu.item_name }} - {{ menu.price }}</li>
+            <p>{{ menu.description }}</p>
+        {% endfor %}
+    </ul>
+
+    <h2>Photos</h2>
+    <ul>
+        {% for photo in photos %}
+            <li><img src="{{ photo.image.url }}" alt="{{ photo.description }}"></li>
+        {% endfor %}
+    </ul>
+
+    <h2>Reviews</h2>
+    <ul>
+        {% for review in reviews %}
+            <li>
+                <strong>{{ review.user.username }}</strong>: {{ review.rating }}/5
+                <p>{{ review.comment }}</p>
+                <p>{{ review.created_at }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

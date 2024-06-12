@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+from .models import Restaurant
 
 # Create your models here.
 
@@ -14,3 +16,13 @@ class Review(models.Model):
 
     class Meta:
         ordering = ['-date_posted']
+
+class Feedback(models.Model):
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+    comment = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Feedback by {self.customer.username} for {self.restaurant.name}"
