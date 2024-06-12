@@ -14,5 +14,4 @@ def book_reservation(request, restaurant_id):
             return redirect('reservation_success')
     else:
         form = ReservationForm()
-    return render(request, 'reservations/book_reservation.html', {'form': form})
-    pass
+    return render(request, 'book_reservation.html', {'form': form})
