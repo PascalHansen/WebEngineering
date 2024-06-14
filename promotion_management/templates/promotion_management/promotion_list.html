@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aktuelle Werbeaktionen</title>
+    
+</head>
+<body>
+    <h1>Aktuelle Werbeaktionen</h1>
+    <a href="{% url 'promotion_create' %}">Neue Werbeaktion erstellen</a>
+    <div class="promotions">
+        {% for promotion in promotions %}
+            <div class="promotion">
+                <h2>{{ promotion.title }}</h2>
+                <p>{{ promotion.description }}</p>
+                <p>Rabatt: {{ promotion.discount }}%</p>
+                <p>Spezialmenüartikel: {{ promotion.special_menu_item }}</p>
+                <p>Treuepunkte: {{ promotion.loyalty_points }}</p>
+                <p>Gültig von {{ promotion.start_date }} bis {{ promotion.end_date }}</p>
+                <a href="{% url 'promotion_edit' promotion.pk %}">Bearbeiten</a>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
+
+

@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Sitzplan</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'table_seating_management/css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Sitzplan</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tischnummer</th>
+                    <th>Name</th>
+                    <th>Datum</th>
+                    <th>Uhrzeit</th>
+                    <th>Anzahl der Gäste</th>
+                    <th>Spezielle Anforderungen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for table, guests in tables_with_guests.items %}
+                    {% for guest in guests %}
+                        <tr>
+                            <td>{{ table.table_number }}</td>
+                            <td>{{ guest.guest_name }}</td>
+                            <td>{{ guest.reservation_date }}</td>
+                            <td>{{ guest.reservation_time }}</td>
+                            <td>{{ guest.guest_count }}</td>
+                            <td>{{ guest.special_requests }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+

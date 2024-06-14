@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerichte mit Treuepunkten</title>
+</head>
+<body>
+    <h1>Gerichte mit Treuepunkten</h1>
+    <a href="{% url 'dish_create' %}">Neues Gericht erstellen</a>
+    <div class="dishes">
+        {% for dish in dishes %}
+            <div class="dish">
+                <h2>{{ dish.name }}</h2>
+                <p>{{ dish.description }}</p>
+                <p>Erforderliche Treuepunkte: {{ dish.loyalty_points_required }}</p>
+                <a href="{% url 'dish_edit' dish.pk %}">Bearbeiten</a>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

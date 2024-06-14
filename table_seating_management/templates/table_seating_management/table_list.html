@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Tischliste</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'reservation_management/css/styles.css' %}">
+    <style>
+      
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border: 2px solid #ddd; 
+        }
+        th, td {
+            border: 2px solid #ddd; 
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tischliste</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tischnummer</th>
+                    <th>Kapazität</th>
+                    <th>Status</th>
+                    <th>Aktionen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for table in tables %}
+                    <tr>
+                        <td>{{ table.table_number }}</td>
+                        <td>{{ table.capacity }}</td>
+                        <td>{{ table.status }}</td>
+                        <td>
+                            <form action="{% url 'change_status' table.id %}" method="post">
+                                {% csrf_token %}
+                                <select name="status">
+                                    <option value="Frei">Frei</option>
+                                    <option value="Reserviert">Reserviert</option>
+                                    <option value="Außer Betrieb">Außer Betrieb</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary">Status ändern</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
