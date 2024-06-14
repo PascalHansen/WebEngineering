@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SearchBar</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+    <style>
+       body {
+        margin: 0;
+        font-family: Helvetica, sans-serif;
+        background-image: url('https://previews.123rf.com/images/alekseyvanin/alekseyvanin2002/alekseyvanin200200319/140029644-beverages-and-food-icons-pattern-restaurant-food-seamless-background-seamless-pattern-vector.jpg');
+    }
+    .navbar {
+        background-color: goldenrod;
+        overflow: auto;
+    }
+    .navbar a {
+        float: left;
+        display: block;
+        color: dimgray;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+        font-weight: bolder;
+    }
+    .navbar a:hover {
+        background-color: lightblue;
+    }
+    .navbar-right {
+        float: right;
+    }
+    </style>
+    <div class="navbar">
+        <a href="../../Interfaces/BaseInterface.html">Homepage</a>
+        <a href="search.html">Search</a>
+        
+        <div class="navbar-right">
+            <a href="#login">Login</a>
+            <a href="#signup">Sign Up</a>
+        </div>
+    </div>
+    <div style="padding: 20px;">
+        <h1>Welcome to the Search</h1>
+        <p>Search Restaurants, get help, Login or sign up.</p>
+    </div>
+    <form method="get" action="{% url 'search' %}">
+        <div class="search">
+            <span class="search-icon material-symbols-outlined">search</span>
+            <input class="search-input" type="search" name="query" placeholder="Search" value="{{ request.GET.query }}">
+            <button type="submit">Search</button>
+        </div>
+    </form>
+
+    {% if results %}
+        <h2>Search Results:</h2>
+        <ul>
+            {% for result in results %}
+                <li>{{ result.name }} - {{ result.address }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
