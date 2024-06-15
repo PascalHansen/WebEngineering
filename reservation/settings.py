@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'users',          # Benutzerverwaltung
     'restaurants',    # Restaurantprofile
     'reservations',   # Reservierungsmanagement
-    'reviews'         # Reviews
+    'reviews',        # Reviews
     'management'      # Management
 ]
 
@@ -127,8 +127,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-AUTH_USER_MODEL = 'users.CustomUser'
 
 AUTH_USER_MODEL = 'users.CustomUser'
 

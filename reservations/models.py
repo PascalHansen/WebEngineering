@@ -2,6 +2,9 @@ from django.db import models
 from management.models import Table  
 
 # Create your models here.
+def get_table_model():
+    from management.models import Table
+    return Table
 
 class Reservations(models.Model):
     restaurant = models.ForeignKey('restaurants.Restaurant', on_delete=models.CASCADE, related_name='reservations')
@@ -14,4 +17,4 @@ class Reservations(models.Model):
     status = models.CharField(max_length=50, default='pending')
 
     def __str__(self):
-        return f'Reservation for {self.party_size} at {self.restaurant.name} on {self.date} at {self.time}'
+        return f'Reservation for {self.party_size} at {self.restaurant} on {self.date} at {self.time}'

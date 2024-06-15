@@ -8,13 +8,17 @@ from management.models import Table, Promotion, Dish
 # Erstellen der Gruppen
 customer_group, created = Group.objects.get_or_create(name='Customer')
 owner_group, created = Group.objects.get_or_create(name='RestaurantManager')
-management_group, created = Group.objects.get_or_create(name='Management')
+marketing_group, created = Group.objects.get_or_create(name='Marketing')
 
 # Berechtigungen definieren
 reservation_content_type = ContentType.objects.get_for_model(Reservations)
 
-can_view_reservation = Permission.objects.get(
-    codename='view_reservation',
+can_view_reservationlist = Permission.objects.get(
+    codename='view_reservationlist',
+    content_type=reservation_content_type,
+)
+can_view_reservationdetail = Permission.objects.get(
+    codename='view_reservationdetail',
     content_type=reservation_content_type,
 )
 can_edit_reservation = Permission.objects.get(
@@ -127,9 +131,9 @@ can_dish_edit = Permission.objects.get(
 )
 
 # Berechtigungen zu Gruppen hinzufügen
-customer_group.permissions.add(can_view_reservation, can_add_reservation, can_add_review, can_delete_review)
-owner_group.permissions.add(can_view_reservation, can_edit_reservation, can_delete_reservation, dashboard, can_create_restaurant, 
+customer_group.permissions.add(can_view_reservationlist, can_view_reservationdetail, can_add_reservation, can_add_review, can_delete_review)
+owner_group.permissions.add(can_view_reservationlist, can_view_reservationdetail, can_edit_reservation, can_delete_reservation, dashboard, can_create_restaurant, 
                             can_update_restaurant, can_update_menu, can_update_photo)
-management_group.permissions.add(customer_data, trend_analysis, can_generate_report)
+marketing_group.permissions.add(customer_data, trend_analysis, can_generate_report)
 
 print("Gruppen und Berechtigungen wurden erfolgreich erstellt und zugewiesen.")

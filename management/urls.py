@@ -10,4 +10,6 @@ urlpatterns = [
     path('dishes/', views.dish_list, name='dish_list'),
     path('dish/new/', views.dish_create, name='dish_create'),
     path('dish/<int:pk>/edit/', views.dish_edit, name='dish_edit'),
+    path('clear/', views.clear_notifications, name='clear_notifications'),
+    path('', views.notification_list, name='notification_list'),
 ]

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Table, Promotion, Dish
+from .models import Table, Promotion, Dish, Notification
 from reservations.models import Reservations
 from .forms import PromotionForm, DishForm
 from django.contrib.auth.decorators import permission_required
@@ -96,3 +96,15 @@ def dish_edit(request, pk):
     else:
         form = DishForm(instance=dish)
     return render(request, 'templates/dish_form.html', {'form': form})
+
+# Notifications Management
+
+def notification_list(request):
+    notifications = Notification.objects.all().order_by('-timestamp')
+    return render(request, 'templates/notification_list.html', {'notifications': notifications})
+
+def clear_notifications(request):
+    if request.method == 'POST':
+        Notification.objects.all().delete()
+    
+    return redirect('notification_list')

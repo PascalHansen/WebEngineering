@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 # Tisch
 class Table(models.Model):
@@ -28,6 +29,7 @@ class Promotion(models.Model):
     def __str__(self):
         return self.title
 
+# Dish / Gerichte
 class Dish(models.Model):
     name = models.CharField("Gerichtname", max_length=100)
     description = models.TextField("Beschreibung")
@@ -36,3 +38,11 @@ class Dish(models.Model):
 
     def __str__(self):
         return self.name
+    
+# Notifications Model
+class Notification(models.Model):
+    message = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(default=datetime.now)
+      
+def __str__(self):
+     return self.message

@@ -1,11 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ReservationForm
 from django.contrib.auth.decorators import permission_required
 from datetime import datetime
 from .models import Reservations
-from notifications.models import Notification
+from management.models import Notification
 
-@permission_required('reservations.view_reservation', raise_exception=True)
+@permission_required('reservations.view_reservationlist', raise_exception=True)
 def reservation_list(request):
     reservations = Reservations.objects.all()
     notifications = Notification.objects.all().order_by('-id')  
@@ -22,7 +22,12 @@ def reservation_add(request):
             return redirect('reservation_list')
     else:
         form = ReservationForm()
-    return render(request, 'reservation_management/reservation_form.html', {'form': form})
+    return render(request, 'templates/reservation_form.html', {'form': form})
+
+@permission_required('reservations.view_reservationdetail', raise_exception=True)
+def reservation_detail(request, pk):
+    reservation = get_object_or_404(Reservations, pk=pk)
+    return render(request, 'reservations/reservation_detail.html', {'reservation': reservation})
 
 @permission_required('reservations.change_reservation', raise_exception=True)
 def reservation_edit(request, pk):
@@ -37,7 +42,7 @@ def reservation_edit(request, pk):
     else:
         form = ReservationForm(instance=reservation)
     
-    return render(request, 'reservation_management/reservation_edit.html', {'form': form, 'reservation': reservation})
+    return render(request, 'templates/reservation_edit.html', {'form': form, 'reservation': reservation})
 
 @permission_required('reservations.delete_reservation', raise_exception=True)
 def reservation_delete(request, pk):
