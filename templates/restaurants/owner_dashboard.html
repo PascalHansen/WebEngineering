@@ -17,6 +17,7 @@
                 <a href="{% url 'update_restaurant' restaurant.pk %}">Update Restaurant</a>
                 <a href="{% url 'update_menu' restaurant.pk %}">Update Menu</a>
                 <a href="{% url 'update_photo' restaurant.pk %}">Update Photos</a>
+                <a href="{% url 'delete_restaurant' restaurant.pk %}">Delete</a>
             </li>
         {% endfor %}
     </ul>

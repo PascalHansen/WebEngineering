@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'restaurants',    # Restaurantprofile
     'reservations',   # Reservierungsmanagement
     'reviews',        # Reviews
-    'management'      # Management
+    'management',      # Management
 ]
 
 MIDDLEWARE = [

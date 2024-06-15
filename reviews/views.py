@@ -6,7 +6,7 @@ from .forms import ReviewForm
 
 class ReviewListView(ListView):
     model = Review
-    template_name = 'review_list.html'
+    template_name = 'templates/review/review_list.html'
     context_object_name = 'reviews'
     paginate_by = 10  # Seitenpaginierung, falls viele Bewertungen vorhanden sind
 
@@ -22,7 +22,7 @@ def create_review(request, restaurant_id):
             return redirect('restaurant_detail', pk=restaurant_id)
     else:
         form = ReviewForm()
-    return render(request, 'reviews/review_form.html', {'form': form})
+    return render(request, 'templates/reviews/review_form.html', {'form': form})
 
 @permission_required('reviews.delete_review', raise_exception=True)
 def delete_review(request, review_id):
@@ -31,4 +31,4 @@ def delete_review(request, review_id):
         review.delete()
         return redirect('restaurant_detail', pk=review.restaurant_id)
     else:
-        return render(request, 'reviews/forbidden.html')
+        return render(request, 'templates/reviews/forbidden.html')

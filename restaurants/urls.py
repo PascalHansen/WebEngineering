@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import RestaurantListView, search_restaurants, dashboard, create_restaurant, update_restaurant, update_menu, update_photo, restaurant_detail, customer_data, generate_report, trend_analysis
+from .views import RestaurantListView, delete_restaurant, search_restaurants, dashboard, create_restaurant, update_restaurant, update_menu, update_photo, restaurant_detail, customer_data, generate_report, trend_analysis
 
 urlpatterns = [
     path('', RestaurantListView.as_view(), name='restaurant_list'),
@@ -15,4 +15,5 @@ urlpatterns = [
     path('customer-data/', customer_data, name='customer_data'),
     path('trend-analysis/', trend_analysis, name='trend_analysis'),
     path('generate-report/', generate_report, name='generate_report'),
+    path('delete/<int:pk>/', delete_restaurant, name='delete_restaurant'),
 ]

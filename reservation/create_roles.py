@@ -11,6 +11,8 @@ owner_group, created = Group.objects.get_or_create(name='RestaurantManager')
 marketing_group, created = Group.objects.get_or_create(name='Marketing')
 
 # Berechtigungen definieren
+
+# Für Reservierungen
 reservation_content_type = ContentType.objects.get_for_model(Reservations)
 
 can_view_reservationlist = Permission.objects.get(
@@ -34,6 +36,7 @@ can_delete_reservation = Permission.objects.get(
     content_type=reservation_content_type,
 )
 
+# Für Reviews
 review_content_type = ContentType.objects.get_for_model(Review)
 
 can_add_review = Permission.objects.get(
@@ -46,10 +49,11 @@ can_delete_review = Permission.objects.get(
     content_type=review_content_type,
 )
 
+# Für Restaurant Management
 restaurant_content_type = ContentType.objects.get_for_model(Restaurant, Menu, Photo, Booking)
 
-dashboard = Permission.objects.get(
-    codename='dashboard',
+owner_dashboard = Permission.objects.get(
+    codename='owner_dashboard',
     content_type=restaurant_content_type,
 )
 
@@ -73,6 +77,11 @@ can_update_photo = Permission.objects.get(
     content_type=restaurant_content_type,
 )
 
+can_delete_restaurant = Permission.objects.get(
+    codename='delete_restaurant',
+    content_type=restaurant_content_type,
+)
+
 customer_data = Permission.objects.get(
     codename='customer_data',
     content_type=restaurant_content_type,
@@ -88,6 +97,7 @@ can_generate_report = Permission.objects.get(
     content_type=restaurant_content_type,
 )
 
+# Management (Tische und Notifications)
 management_content_type = ContentType.objects.get_for_model(Table, Promotion, Dish)
 # Florian morgen noch Fragen, wer welche Berechtigungen braucht
 table_list = Permission.objects.get(
@@ -132,8 +142,8 @@ can_dish_edit = Permission.objects.get(
 
 # Berechtigungen zu Gruppen hinzufügen
 customer_group.permissions.add(can_view_reservationlist, can_view_reservationdetail, can_add_reservation, can_add_review, can_delete_review)
-owner_group.permissions.add(can_view_reservationlist, can_view_reservationdetail, can_edit_reservation, can_delete_reservation, dashboard, can_create_restaurant, 
-                            can_update_restaurant, can_update_menu, can_update_photo)
+owner_group.permissions.add(can_view_reservationlist, can_view_reservationdetail, can_edit_reservation, can_delete_reservation, owner_dashboard, can_create_restaurant, 
+                            can_update_restaurant, can_update_menu, can_update_photo, can_delete_restaurant)
 marketing_group.permissions.add(customer_data, trend_analysis, can_generate_report)
 
 print("Gruppen und Berechtigungen wurden erfolgreich erstellt und zugewiesen.")
