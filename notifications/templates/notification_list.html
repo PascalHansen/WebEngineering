@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Benachrichtigungen</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'notifications_management/css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Benachrichtigungen</h1>
+        <div class="notification-box">
+            {% for notification in notifications %}
+                <div class="notification">
+                    {% if "gelöscht" in notification.message %}
+                        <span class="deleted">{{ notification.message }}</span>
+                    {% elif "geändert" in notification.message %}
+                        <span class="changed">{{ notification.message }}</span>
+                    {% elif "hinzugefügt" in notification.message %}
+                        <span class="added">{{ notification.message }}</span>
+                    {% else %}
+                        <span>{{ notification.message }}</span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        <form action="{% url 'clear_notifications' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-delete-all">Verlauf löschen</button>
+        </form>
+    </div>
+</body>
+</html>
+

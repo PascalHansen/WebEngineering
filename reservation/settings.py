@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'users',          # Benutzerverwaltung
     'restaurants',    # Restaurantprofile
     'reservations',   # Reservierungsmanagement
+    'reviews'         # Reviews
+    'management'      # Management
 ]
 
 MIDDLEWARE = [
@@ -127,3 +129,11 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.CustomUser'
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
+LOGIN_REDIRECT_URL = '/'  # Hier wird der Benutzer zur Startseite umgeleitet
+
+LOGOUT_REDIRECT_URL = '/' 
+
+LOGIN_URL = '/users/login/'  # Standard-Login-URL

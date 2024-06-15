@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
-from .models import Restaurant
+from users.models import CustomUser
+from restaurants.models import Restaurant
 
 # Create your models here.
 
@@ -18,7 +18,7 @@ class Review(models.Model):
         ordering = ['-date_posted']
 
 class Feedback(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     rating = models.IntegerField()
     comment = models.TextField(blank=True)

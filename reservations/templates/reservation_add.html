@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Neue Reservierung hinzufügen</title>
+</head>
+<body>
+    <h1>Neue Reservierung hinzufügen</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Reservierung hinzufügen</button>
+    </form>
+    <a href="{% url 'reservation_list' %}">Zurück zur Reservierungsliste</a>
+</body>
+</html>

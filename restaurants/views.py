@@ -1,11 +1,11 @@
 from django.views.generic import ListView
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Restaurant, Menu, Photo, Booking
-from ..users.models import CustomerProfile
-from ..reviews.models import Feedback
-from django.contrib.auth.decorators import login_required, user_passes_test
+from .models import Restaurant, Booking
+from users.models import CustomerProfile
+from reviews.models import Feedback
+from django.contrib.auth.decorators import permission_required
 from .forms import RestaurantForm, MenuForm, PhotoForm
-from django.db.models import Count, Avg
+from django.db.models import Count
 import datetime
 
 # Create your views here.
@@ -35,12 +35,12 @@ def search_restaurants(request):
     }
     return render(request, 'search_results.html', context)
 
-@login_required
+@permission_required('restaurants.dashboard', raise_exception=True)
 def dashboard(request):
     restaurants = Restaurant.objects.filter(owner=request.user)
     return render(request, 'dashboard.html', {'restaurants': restaurants})
 
-@login_required
+@permission_required('restaurants.create_restaurant', raise_exception=True)
 def create_restaurant(request):
     if request.method == 'POST':
         form = RestaurantForm(request.POST)
@@ -48,12 +48,12 @@ def create_restaurant(request):
             restaurant = form.save(commit=False)
             restaurant.owner = request.user
             restaurant.save()
-            return redirect('dashboard')  # Stellen Sie sicher, dass Sie diese URL in Ihrem Projekt definiert haben
+            return redirect('dashboard')
     else:
         form = RestaurantForm()
     return render(request, 'create_restaurant.html', {'form': form})
 
-@login_required
+@permission_required('restaurants.update_restaurant', raise_exception=True)
 def update_restaurant(request, pk):
     restaurant = Restaurant.objects.get(pk=pk, owner=request.user)
     if request.method == 'POST':
@@ -65,7 +65,7 @@ def update_restaurant(request, pk):
         form = RestaurantForm(instance=restaurant)
     return render(request, 'update_restaurant.html', {'form': form})
 
-@login_required
+@permission_required('restaurants.update_menu', raise_exception=True)
 def update_menu(request, pk):
     restaurant = Restaurant.objects.get(pk=pk, owner=request.user)
     if request.method == 'POST':
@@ -79,7 +79,7 @@ def update_menu(request, pk):
         form = MenuForm()
     return render(request, 'update_menu.html', {'form': form})
 
-@login_required
+@permission_required('restaurants.update_photo', raise_exception=True)
 def update_photo(request, pk):
     restaurant = Restaurant.objects.get(pk=pk, owner=request.user)
     if request.method == 'POST':
@@ -102,10 +102,7 @@ def restaurant_detail(request, pk):
         'reviews': restaurant.reviews.all()
     })
 
-def is_marketing(user):
-    return user.groups.filter(name='Marketing').exists()
-
-@user_passes_test(is_marketing)
+@permission_required('restaurants.customer_data', raise_exception=True)
 def customer_data(request):
     today = datetime.date.today()
     bookings = Booking.objects.all()
@@ -118,7 +115,7 @@ def customer_data(request):
         'demographics': demographics
     })
 
-@user_passes_test(is_marketing)
+@permission_required('restaurants.trend_analysis', raise_exception=True)
 def trend_analysis(request):
     today = datetime.date.today()
     popular_times = Booking.objects.values('date').annotate(count=Count('id')).order_by('-count')
@@ -133,7 +130,7 @@ def trend_analysis(request):
         'feedback_themes': feedback_themes
     })
 
-@user_passes_test(is_marketing)
+@permission_required('restaurants.generate_report', raise_exception=True)
 def generate_report(request):
     # Implement custom report generation logic here
     return render(request, 'generate_report.html')

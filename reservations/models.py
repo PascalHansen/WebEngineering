@@ -1,4 +1,5 @@
 from django.db import models
+from management.models import Table  
 
 # Create your models here.
 
@@ -8,6 +9,8 @@ class Reservations(models.Model):
     date = models.DateField()
     time = models.TimeField()
     party_size = models.PositiveIntegerField()
+    special_requests = models.TextField(blank=True)
+    table = models.ForeignKey(Table, on_delete=models.CASCADE, null=True)
     status = models.CharField(max_length=50, default='pending')
 
     def __str__(self):

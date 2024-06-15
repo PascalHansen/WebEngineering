@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Book Reservation</title>
+    <title>Neue Bewertung</title>
 </head>
 <body>
-    <h2>Book a Reservation</h2>
+    <h2>Neue Bewertung</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Book</button>
+        <button type="submit">Bewertung absenden</button>
     </form>
 </body>
 </html>
