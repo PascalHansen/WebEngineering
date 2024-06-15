@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Neue Reservierung hinzufügen</title>
-</head>
-<body>
-    <h1>Neue Reservierung hinzufügen</h1>
+{% extends 'base.html' %}
+
+{% block title %}Add new reservation{% endblock %}
+
+{% block content %}
+<h1>Add new reservation</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Reservierung hinzufügen</button>
+        <button type="submit">Add</button>
     </form>
-    <a href="{% url 'reservation_list' %}">Zurück zur Reservierungsliste</a>
-</body>
-</html>
+    <a href="{% url 'reservation_list' %}">Return to list</a>
+{% endblock %}

@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ restaurant.name }} Details</title>
-</head>
-<body>
-    <h1>{{ restaurant.name }}</h1>
+{% extends 'base.html' %}
+
+{% block title %}{{ restaurant.name }} Details{% endblock %}
+
+{% block content %}
+<h1>{{ restaurant.name }}</h1>
     <p>Location: {{ restaurant.location }}</p>
     <p>Cuisine: {{ restaurant.cuisine }}</p>
     <p>Description: {{ restaurant.description }}</p>
@@ -38,5 +36,4 @@
             </li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}

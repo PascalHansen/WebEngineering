@@ -9,7 +9,7 @@ from management.models import Notification
 def reservation_list(request):
     reservations = Reservations.objects.all()
     notifications = Notification.objects.all().order_by('-id')  
-    return render(request, 'templates/reservations/reservation_list.html', {'reservations': reservations, 'notifications': notifications})
+    return render(request, 'reservations/reservation_list.html', {'reservations': reservations, 'notifications': notifications})
 
 @permission_required('reservations.add_reservation', raise_exception=True)
 def reservation_add(request):
@@ -17,17 +17,17 @@ def reservation_add(request):
         form = ReservationForm(request.POST)
         if form.is_valid():
             reservation = form.save()
-            message = f"{datetime.now()} - {reservation.guest_name} - Reservierung hinzugefügt. Tischnummer: {reservation.table.table_number}"
+            message = f"{datetime.now()} - {reservation.guest_name} - added Reservation. Tischnummer: {reservation.table.table_number}"
             Notification.objects.create(message=message)
             return redirect('reservation_list')
     else:
         form = ReservationForm()
-    return render(request, 'templates/reservations/reservation_form.html', {'form': form})
+    return render(request, 'reservations/reservation_form.html', {'form': form})
 
 @permission_required('reservations.view_reservationdetail', raise_exception=True)
 def reservation_detail(request, pk):
     reservation = get_object_or_404(Reservations, pk=pk)
-    return render(request, 'templates/reservations/reservation_detail.html', {'reservation': reservation})
+    return render(request, 'reservations/reservation_detail.html', {'reservation': reservation})
 
 @permission_required('reservations.change_reservation', raise_exception=True)
 def reservation_edit(request, pk):
@@ -42,7 +42,7 @@ def reservation_edit(request, pk):
     else:
         form = ReservationForm(instance=reservation)
     
-    return render(request, 'templates/reservation_edit.html', {'form': form, 'reservation': reservation})
+    return render(request, 'reservations/reservation_edit.html', {'form': form, 'reservation': reservation})
 
 @permission_required('reservations.delete_reservation', raise_exception=True)
 def reservation_delete(request, pk):

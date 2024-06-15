@@ -8,8 +8,9 @@ from django.contrib.auth.decorators import permission_required
 @permission_required('management.table_list', raise_exception=True)
 def table_list(request):
     tables = Table.objects.all().order_by('table_number')
-    return render(request, 'templates/management/table_list.html', {'tables': tables})
+    return render(request, 'management/table_list.html', {'tables': tables})
 
+@permission_required('management.change_status', raise_exception=True)
 def change_status(request, table_id):
     table = Table.objects.get(pk=table_id)
     if request.method == 'POST':
@@ -17,7 +18,7 @@ def change_status(request, table_id):
         table.status = new_status
         table.save()
         return redirect('table_list')
-    return render(request, 'templates/management/change_status.html', {'table': table})
+    return render(request, 'management/change_status.html', {'table': table})
 
 @permission_required('management.seat_plan', raise_exception=True)
 def seat_plan(request):
@@ -38,13 +39,13 @@ def seat_plan(request):
         'tables_with_guests': tables_with_guests,
     }
 
-    return render(request, 'templates/management/seat_plan.html', context)
+    return render(request, 'management/seat_plan.html', context)
 
 # Promotion Management
 @permission_required('management.promotion_list', raise_exception=True)
 def promotion_list(request):
     promotions = Promotion.objects.filter(is_active=True)
-    return render(request, 'templates/promotion_list.html', {'promotions': promotions})
+    return render(request, 'management/promotion_list.html', {'promotions': promotions})
 
 @permission_required('management.promotion_create', raise_exception=True)
 def promotion_create(request):
@@ -55,7 +56,7 @@ def promotion_create(request):
             return redirect('promotion_list')
     else:
         form = PromotionForm()
-    return render(request, 'templates/management/promotion_form.html', {'form': form})
+    return render(request, 'management/promotion_form.html', {'form': form})
 
 @permission_required('management.promotion_edit', raise_exception=True)
 def promotion_edit(request, pk):
@@ -67,12 +68,12 @@ def promotion_edit(request, pk):
             return redirect('promotion_list')
     else:
         form = PromotionForm(instance=promotion)
-    return render(request, 'templates/management/promotion_form.html', {'form': form})
+    return render(request, 'management/promotion_form.html', {'form': form})
 
 @permission_required('management.dish_list', raise_exception=True)
 def dish_list(request):
     dishes = Dish.objects.filter(is_available=True)
-    return render(request, 'templates/dish_list.html', {'dishes': dishes})
+    return render(request, 'management/dish_list.html', {'dishes': dishes})
 
 @permission_required('management.dish_create', raise_exception=True)
 def dish_create(request):
@@ -83,7 +84,7 @@ def dish_create(request):
             return redirect('dish_list')
     else:
         form = DishForm()
-    return render(request, 'templates/management/dish_form.html', {'form': form})
+    return render(request, 'management/dish_form.html', {'form': form})
 
 @permission_required('management.dish_edit', raise_exception=True)
 def dish_edit(request, pk):
@@ -95,13 +96,15 @@ def dish_edit(request, pk):
             return redirect('dish_list')
     else:
         form = DishForm(instance=dish)
-    return render(request, 'templates/management/dish_form.html', {'form': form})
+    return render(request, 'management/dish_form.html', {'form': form})
 
 # Notifications Management
+@permission_required('management.get_notifications', raise_exception=True)
 def notification_list(request):
     notifications = Notification.objects.all().order_by('-timestamp')
-    return render(request, 'templates/management/notification_list.html', {'notifications': notifications})
+    return render(request, 'management/notification_list.html', {'notifications': notifications})
 
+@permission_required('management.clear_notification', raise_exception=True)
 def clear_notifications(request):
     if request.method == 'POST':
         Notification.objects.all().delete()

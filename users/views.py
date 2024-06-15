@@ -8,7 +8,7 @@ from .forms import CustomUserCreationForm, CustomLoginForm
 
 # Login View
 class CustomLoginView(auth_views.LoginView):
-    template_name = 'templates/users/login.html'
+    template_name = 'users/login.html'
     authentication_form = CustomLoginForm
 
 def register(request):
@@ -23,4 +23,4 @@ def register(request):
             return redirect('home')
     else:
         form = CustomUserCreationForm()
-    return render(request, 'templates/users/register.html', {'form': form})
+    return render(request, 'users/register.html', {'form': form})

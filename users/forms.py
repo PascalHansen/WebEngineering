@@ -12,6 +12,9 @@ class CustomUserCreationForm(UserCreationForm):
     ROLE_CHOICES = [
         ('customer', 'Customer'),
         ('restaurant_manager', 'Restaurant Manager'),
+      # ('staff', 'Staff Member'), # Staff Member derzeit ungenutzt, aber für Scalability bereits angelegt
+        
+        # Marketing Member Rolle muss vom Admin separat vergeben werden, um Sicherheitslücken zu vermeiden
     ]
     
     email = forms.EmailField(required=True)

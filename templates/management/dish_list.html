@@ -1,22 +1,18 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerichte mit Treuepunkten</title>
-</head>
-<body>
-    <h1>Gerichte mit Treuepunkten</h1>
-    <a href="{% url 'dish_create' %}">Neues Gericht erstellen</a>
+{% extends 'base.html' %}
+
+{% block title %}Loyalty dishes{% endblock %}
+
+{% block content %}
+<h1>Dishes earned with loyalty</h1>
+    <a href="{% url 'dish_create' %}">Add new dish</a>
     <div class="dishes">
         {% for dish in dishes %}
             <div class="dish">
                 <h2>{{ dish.name }}</h2>
                 <p>{{ dish.description }}</p>
-                <p>Erforderliche Treuepunkte: {{ dish.loyalty_points_required }}</p>
-                <a href="{% url 'dish_edit' dish.pk %}">Bearbeiten</a>
+                <p>Loyalty needed: {{ dish.loyalty_points_required }}</p>
+                <a href="{% url 'dish_edit' dish.pk %}">Edit</a>
             </div>
         {% endfor %}
     </div>
-</body>
-</html>
+{% endblock %}

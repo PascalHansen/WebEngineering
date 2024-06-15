@@ -1,23 +1,18 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>Status ändern</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'templates/management/static/styles.css' %}">
-</head>
-<body>
-    <div class="container">
-        <h1>Status ändern für Tisch {{ table.table_number }}</h1>
-        <form action="{% url 'change_status' table.id %}" method="post">
-            {% csrf_token %}
-            <select name="status">
-                <option value="Frei">Frei</option>
-                <option value="Reserviert">Reserviert</option>
-                <option value="Außer Betrieb">Außer Betrieb</option>
-            </select>
-            <button type="submit" class="btn btn-primary">Status ändern</button>
-        </form>
-    </div>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Change status{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Edit status for table {{ table.table_number }}</h1>
+    <form action="{% url 'change_status' table.id %}" method="post">
+        {% csrf_token %}
+        <select name="status">
+            <option value="Frei">Free</option>
+            <option value="Reserviert">Blocked</option>
+            <option value="Außer Betrieb">Not usable</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Change</button>
+    </form>
+</div>
+{% endblock %}

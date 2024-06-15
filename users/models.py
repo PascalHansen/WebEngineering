@@ -6,8 +6,9 @@ from django.db import models
 class CustomUser(AbstractUser):
     USER_ROLES = [
         ('customer', 'Customer'),
-        ('manager', 'Manager'),
-        ('marketung', 'Marketing'),
+        ('manager', 'RestaurantManager'),
+        ('marketing', 'Marketing'),
+        ('staff', 'Staff'), # Aktuell ungenutzt, aber für Scalability bereits implementiert. So kann es bei potentiellen zukünftigen Bedarf genutzt werden
     ]
     role = models.CharField(max_length=10, choices=USER_ROLES, default='customer')
 

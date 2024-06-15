@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Reviews</title>
-</head>
-<body>
-    <h2>Review List</h2>
+{% extends 'base.html' %}
+
+{% block title %}Reviews{% endblock %}
+
+{% block content %}
+<h2>Review List</h2>
     <ul>
         {% for review in reviews %}
             <li>
@@ -35,5 +34,4 @@
             </span>
         </div>
     {% endif %}
-</body>
-</html>
+{% endblock %}

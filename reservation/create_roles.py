@@ -3,37 +3,42 @@ from django.contrib.contenttypes.models import ContentType
 from reservations.models import Reservations
 from reviews.models import Review
 from restaurants.models import Restaurant, Menu, Photo, Booking
-from management.models import Table, Promotion, Dish
+from management.models import Table, Promotion, Dish, Notification
 
 # Erstellen der Gruppen
 customer_group, created = Group.objects.get_or_create(name='Customer')
 owner_group, created = Group.objects.get_or_create(name='RestaurantManager')
 marketing_group, created = Group.objects.get_or_create(name='Marketing')
+staff_group, created = Group.objects.get_or_create(name='Staff') # Bisher ungenutzt
 
 # Berechtigungen definieren
 
 # Für Reservierungen
-reservation_content_type = ContentType.objects.get_for_model(Reservations)
+reservations_content_type = ContentType.objects.get_for_model(Reservations)
 
 can_view_reservationlist = Permission.objects.get(
     codename='view_reservationlist',
-    content_type=reservation_content_type,
+    content_type=reservations_content_type,
 )
+
 can_view_reservationdetail = Permission.objects.get(
     codename='view_reservationdetail',
-    content_type=reservation_content_type,
+    content_type=reservations_content_type,
 )
+
 can_edit_reservation = Permission.objects.get(
     codename='change_reservation',
-    content_type=reservation_content_type,
+    content_type=reservations_content_type,
 )
+
 can_add_reservation = Permission.objects.get(
     codename='add_reservation',
-    content_type=reservation_content_type,
+    content_type=reservations_content_type,
 )
+
 can_delete_reservation = Permission.objects.get(
     codename='delete_reservation',
-    content_type=reservation_content_type,
+    content_type=reservations_content_type,
 )
 
 # Für Reviews
@@ -98,10 +103,15 @@ can_generate_report = Permission.objects.get(
 )
 
 # Management (Tische und Notifications)
-management_content_type = ContentType.objects.get_for_model(Table, Promotion, Dish)
+management_content_type = ContentType.objects.get_for_model(Table, Promotion, Dish, Notification)
 # Florian morgen noch Fragen, wer welche Berechtigungen braucht
 table_list = Permission.objects.get(
     codename='table_list',
+    content_type=management_content_type,
+)
+
+can_change_status = Permission.objects.get(
+    codename='change_status',
     content_type=management_content_type,
 )
 
@@ -140,10 +150,22 @@ can_dish_edit = Permission.objects.get(
     content_type=management_content_type,
 )
 
+can_get_notifications = Permission.objects.get(
+    codename='get_notifications',
+    content_type=management_content_type,
+)
+
+can_clear_notifications = Permission.objects.get(
+    codename='clear_notifications',
+    content_type=management_content_type,
+)
+
 # Berechtigungen zu Gruppen hinzufügen
 customer_group.permissions.add(can_view_reservationlist, can_view_reservationdetail, can_add_reservation, can_add_review, can_delete_review)
 owner_group.permissions.add(can_view_reservationlist, can_view_reservationdetail, can_edit_reservation, can_delete_reservation, owner_dashboard, can_create_restaurant, 
-                            can_update_restaurant, can_update_menu, can_update_photo, can_delete_restaurant)
+                            can_update_restaurant, can_update_menu, can_update_photo, can_delete_restaurant, can_get_notifications, can_change_status, seat_plan, 
+                            promotion_list, can_promotion_create, can_promotion_edit, dish_list, can_dish_create, can_dish_edit, can_clear_notifications)
 marketing_group.permissions.add(customer_data, trend_analysis, can_generate_report)
+staff_group.permissions.add()
 
 print("Gruppen und Berechtigungen wurden erfolgreich erstellt und zugewiesen.")

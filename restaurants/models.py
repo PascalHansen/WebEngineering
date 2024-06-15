@@ -27,7 +27,7 @@ class Menu(models.Model):
 
 class Photo(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='photos')
-    image = models.ImageField(upload_to='restaurant_photos/')
+    image = models.ImageField(upload_to='restaurants/restaurant_photos/')
     description = models.CharField(max_length=255, blank=True)
 
     def __str__(self):

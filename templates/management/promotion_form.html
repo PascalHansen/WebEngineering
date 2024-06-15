@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Werbeaktion erstellen/bearbeiten</title>
-</head>
-<body>
-    <h1>Werbeaktion erstellen/bearbeiten</h1>
+{% extends 'base.html' %}
+
+{% block title %}Edit promotion{% endblock %}
+
+{% block content %}
+<h1>Add & edit promotions</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Speichern</button>
+        <button type="submit">Submit</button>
     </form>
-    <a href="{% url 'promotion_list' %}">Zurück zur Liste</a>
-</body>
-</html>
+    <a href="{% url 'promotion_list' %}">Back to list</a>
+{% endblock %}

@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Reservierung bearbeiten</title>
-</head>
-<body>
-    <h1>Reservierung bearbeiten</h1>
+{% extends 'base.html' %}
+
+{% block title %}Edit Reservation{% endblock %}
+
+{% block content %}
+<h1>Edit Reservation</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Speichern</button>
+        <button type="submit">Save</button>
     </form>
-</body>
-</html>
+{% endblock %}
