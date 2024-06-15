@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Reservation Service{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'reservation/css/base_styles.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <a href="{% url 'search_restaurants' %}">Search</a>
+        
+        <div class="navbar-right">
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+        </div>
+    </div>
+
+    <div class="content">
+        {% block content %}
+        <h1>Welcome to the Reservation Service</h1>
+        <p>Search Restaurants, get help, Login or sign up.</p>
+        {% endblock %}
+    </div>
+
+</body>
+</html>

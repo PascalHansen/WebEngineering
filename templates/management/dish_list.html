@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Loyalty dishes{% endblock %}
+
+{% block content %}
+<h1>Dishes earned with loyalty</h1>
+    <a href="{% url 'dish_create' %}">Add new dish</a>
+    <div class="dishes">
+        {% for dish in dishes %}
+            <div class="dish">
+                <h2>{{ dish.name }}</h2>
+                <p>{{ dish.description }}</p>
+                <p>Loyalty needed: {{ dish.loyalty_points_required }}</p>
+                <a href="{% url 'dish_edit' dish.pk %}">Edit</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

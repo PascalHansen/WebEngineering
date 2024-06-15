@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'users',          # Benutzerverwaltung
     'restaurants',    # Restaurantprofile
     'reservations',   # Reservierungsmanagement
+    'reviews',        # Reviews
+    'management',      # Management
 ]
 
 MIDDLEWARE = [
@@ -58,7 +60,7 @@ ROOT_URLCONF = 'reservation.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR / 'templates' ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,9 +123,21 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.CustomUser'
+
+LOGIN_REDIRECT_URL = '/'  # Hier wird der Benutzer zur Startseite umgeleitet
+
+LOGOUT_REDIRECT_URL = '/' 
+
+LOGIN_URL = '/users/login/'  # Standard-Login-URL

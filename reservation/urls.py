@@ -16,11 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import TemplateView
+from management import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('reviews/', include('reviews.urls')),
     path('reservations/', include('reservations.urls')),
-    path('', include('restaurants.urls')),  # Haupt-URLs der Anwendung
+    path('management/', include('management.urls')),
+    path('', TemplateView.as_view(template_name='base.html'), name='base'),
+    path('', include('restaurants.urls')), 
+    path('management/', views.table_list, name='table_list'),
+    path('management/<int:table_id>/change_status/', views.change_status, name='change_status'),
 ]

@@ -1,12 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import User
+from users.models import CustomUser
 
 # Create your models here.
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
-    foodtype = models.CharField(max_length=100)
+    cuisine = models.CharField(max_length=100)
     description = models.TextField()
     opening_hours = models.CharField(max_length=100, blank=True)
     contact_info = models.CharField(max_length=100, blank=True)
@@ -27,14 +27,14 @@ class Menu(models.Model):
 
 class Photo(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='photos')
-    image = models.ImageField(upload_to='restaurant_photos/')
+    image = models.ImageField(upload_to='restaurants/restaurant_photos/')
     description = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return f"Photo for {self.restaurant.name}"
     
 class Booking(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     date = models.DateTimeField()
     party_size = models.IntegerField()

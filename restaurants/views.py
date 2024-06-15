@@ -1,16 +1,17 @@
 from django.views.generic import ListView
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Restaurant, Menu, Photo, Booking
-from ..users.models import CustomerProfile
-from ..reviews.models import Feedback
-from django.contrib.auth.decorators import login_required, user_passes_test
+from .models import Restaurant, Booking
+from users.models import CustomerProfile
+from reviews.models import Feedback
+from django.contrib.auth.decorators import permission_required
 from .forms import RestaurantForm, MenuForm, PhotoForm
-from django.db.models import Count, Avg
+from django.db.models import Count
 import datetime
+from django.contrib import messages
 
 # Create your views here.
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'restaurants/home.html')
 
 def search_restaurants(request):
     query = request.GET.get('query')
@@ -33,14 +34,16 @@ def search_restaurants(request):
     context = {
         'restaurants': restaurants
     }
-    return render(request, 'search_results.html', context)
+    return render(request, 'restaurants/search_results.html', context)
 
-@login_required
+# Dashboard einsehen
+@permission_required('restaurants.owner_dashboard', raise_exception=True)
 def dashboard(request):
     restaurants = Restaurant.objects.filter(owner=request.user)
-    return render(request, 'dashboard.html', {'restaurants': restaurants})
+    return render(request, 'restaurants/owner_dashboard.html', {'restaurants': restaurants})
 
-@login_required
+# Restaurant erstellen
+@permission_required('restaurants.create_restaurant', raise_exception=True)
 def create_restaurant(request):
     if request.method == 'POST':
         form = RestaurantForm(request.POST)
@@ -48,12 +51,13 @@ def create_restaurant(request):
             restaurant = form.save(commit=False)
             restaurant.owner = request.user
             restaurant.save()
-            return redirect('dashboard')  # Stellen Sie sicher, dass Sie diese URL in Ihrem Projekt definiert haben
+            return redirect('dashboard')
     else:
         form = RestaurantForm()
-    return render(request, 'create_restaurant.html', {'form': form})
+    return render(request, 'restaurants/create_restaurant.html', {'form': form})
 
-@login_required
+# Restaurant updaten
+@permission_required('restaurants.update_restaurant', raise_exception=True)
 def update_restaurant(request, pk):
     restaurant = Restaurant.objects.get(pk=pk, owner=request.user)
     if request.method == 'POST':
@@ -63,9 +67,10 @@ def update_restaurant(request, pk):
             return redirect('dashboard')
     else:
         form = RestaurantForm(instance=restaurant)
-    return render(request, 'update_restaurant.html', {'form': form})
+    return render(request, 'restaurants/update_restaurant.html', {'form': form})
 
-@login_required
+# Menü updaten
+@permission_required('restaurants.update_menu', raise_exception=True)
 def update_menu(request, pk):
     restaurant = Restaurant.objects.get(pk=pk, owner=request.user)
     if request.method == 'POST':
@@ -77,9 +82,10 @@ def update_menu(request, pk):
             return redirect('dashboard')
     else:
         form = MenuForm()
-    return render(request, 'update_menu.html', {'form': form})
+    return render(request, 'restaurants/update_menu.html', {'form': form})
 
-@login_required
+# Foto updaten
+@permission_required('restaurants.update_photo', raise_exception=True)
 def update_photo(request, pk):
     restaurant = Restaurant.objects.get(pk=pk, owner=request.user)
     if request.method == 'POST':
@@ -91,34 +97,46 @@ def update_photo(request, pk):
             return redirect('dashboard')
     else:
         form = PhotoForm()
-    return render(request, 'update_photo.html', {'form': form})
+    return render(request, 'restaurants/update_photo.html', {'form': form})
 
+# Details einsehen
 def restaurant_detail(request, pk):
     restaurant = get_object_or_404(Restaurant, pk=pk)
-    return render(request, 'restaurant_detail.html', {
+    return render(request, 'restaurants/restaurant_detail.html', {
         'restaurant': restaurant,
         'menus': restaurant.menus.all(),
         'photos': restaurant.photos.all(),
         'reviews': restaurant.reviews.all()
     })
 
-def is_marketing(user):
-    return user.groups.filter(name='Marketing').exists()
+# Restaurants löschen
+@permission_required('restaurants.delete_restaurant', raise_exception=True)
+def delete_restaurant(request, pk):
+    restaurant = get_object_or_404(Restaurant, pk=pk)
+    
+    if request.method == "POST":
+        restaurant.delete()
+        messages.success(request, "Restaurant deleted successfully.")
+        return redirect('dashboard')
 
-@user_passes_test(is_marketing)
+    return render(request, 'restaurants/delete_restaurant_confirm.html', {'restaurant': restaurant})
+
+# Kundendaten einsehen
+@permission_required('restaurants.customer_data', raise_exception=True)
 def customer_data(request):
     today = datetime.date.today()
     bookings = Booking.objects.all()
     feedbacks = Feedback.objects.all()
     demographics = CustomerProfile.objects.values('age', 'gender').annotate(count=Count('user'))
 
-    return render(request, 'customer_data.html', {
+    return render(request, 'restaurants/customer_data.html', {
         'bookings': bookings,
         'feedbacks': feedbacks,
         'demographics': demographics
     })
 
-@user_passes_test(is_marketing)
+# Trends einsehen
+@permission_required('restaurants.trend_analysis', raise_exception=True)
 def trend_analysis(request):
     today = datetime.date.today()
     popular_times = Booking.objects.values('date').annotate(count=Count('id')).order_by('-count')
@@ -126,19 +144,20 @@ def trend_analysis(request):
     peak_seasons = Booking.objects.values('date__month').annotate(count=Count('id')).order_by('-count')
     feedback_themes = Feedback.objects.values('comment').annotate(count=Count('id')).order_by('-count')
 
-    return render(request, 'trend_analysis.html', {
+    return render(request, 'restaurants/trend_analysis.html', {
         'popular_times': popular_times,
         'popular_items': popular_items,
         'peak_seasons': peak_seasons,
         'feedback_themes': feedback_themes
     })
 
-@user_passes_test(is_marketing)
+# Berichte erstellen (??)
+@permission_required('restaurants.generate_report', raise_exception=True)
 def generate_report(request):
-    # Implement custom report generation logic here
-    return render(request, 'generate_report.html')
+    # Muss noch implementiert werden
+    return render(request, 'restaurants/generate_report.html')
 
 class RestaurantListView(ListView):
     model = Restaurant
-    template_name = 'restaurant_list.html'
+    template_name = 'restaurants/restaurant_list.html'
     context_object_name = 'restaurants'

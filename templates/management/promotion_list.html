@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Current promotions{% endblock %}
+
+{% block content %}
+<h1>Current promotions</h1>
+    <a href="{% url 'promotion_create' %}">Add new promotion</a>
+    <div class="promotions">
+        {% for promotion in promotions %}
+            <div class="promotion">
+                <h2>{{ promotion.title }}</h2>
+                <p>{{ promotion.description }}</p>
+                <p>Discount: {{ promotion.discount }}%</p>
+                <p>Special menu items: {{ promotion.special_menu_item }}</p>
+                <p>Loyalty points: {{ promotion.loyalty_points }}</p>
+                <p>Starting {{ promotion.start_date }} until {{ promotion.end_date }}</p>
+                <a href="{% url 'promotion_edit' promotion.pk %}">Edit</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

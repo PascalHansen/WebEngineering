@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser, User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 # Create your models here.
@@ -6,16 +6,17 @@ from django.db import models
 class CustomUser(AbstractUser):
     USER_ROLES = [
         ('customer', 'Customer'),
-        ('owner', 'Owner'),
-        ('staff', 'Staff'),
+        ('manager', 'RestaurantManager'),
+        ('marketing', 'Marketing'),
+        ('staff', 'Staff'), # Aktuell ungenutzt, aber für Scalability bereits implementiert. So kann es bei potentiellen zukünftigen Bedarf genutzt werden
     ]
     role = models.CharField(max_length=10, choices=USER_ROLES, default='customer')
 
     def __str__(self):
         return self.username
-    
+
 class CustomerProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     age = models.IntegerField(blank=True, null=True)
     gender = models.CharField(max_length=10, blank=True)
     preferences = models.TextField(blank=True)  # Dining preferences
