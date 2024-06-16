@@ -1,10 +1,12 @@
 # Create your views here.
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import Group
+#from django.contrib.auth.forms import UserCreationForm
+#from django.contrib.auth.models import Group
 from django.contrib.auth import views as auth_views
 from .forms import CustomUserCreationForm, CustomLoginForm
+from django.contrib.auth.decorators import permission_required
+from .forms import CustomUserChangeForm
 
 # Login View
 class CustomLoginView(auth_views.LoginView):
@@ -24,3 +26,15 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
+
+@permission_required('edit_profile', raise_exception=True)
+def profile_view(request):
+    if request.method == 'POST':
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile') 
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+    
+    return render(request, 'users/profile.html', {'form': form})
