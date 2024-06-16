@@ -14,6 +14,13 @@ class Table(models.Model):
 
     def __str__(self):
         return f"Tisch {self.table_number}"
+    
+    class Meta:
+        permissions = [
+            ("table_list", "Can access table lists"),
+            ("change_status", "Can change the table status"),
+            ("seat_plan", "Can access the seat plan"),
+        ]
 
 # Promotions Models  
 class Promotion(models.Model):
@@ -29,6 +36,12 @@ class Promotion(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        permissions = [
+            ("promotion_create", "Can create promotions"),
+            ("promotion_edit", "Can edit promotions"),
+        ]
+
 # Dish / Gerichte
 class Dish(models.Model):
     name = models.CharField("Gerichtname", max_length=100)
@@ -39,13 +52,25 @@ class Dish(models.Model):
     def __str__(self):
         return self.name
     
+    class Meta:
+        permissions = [
+            ("dish_create", "Can create dishes"),
+            ("dish_edit", "Can edit dishes"),
+        ]
+    
 # Notifications Model
 class Notification(models.Model):
     message = models.CharField(max_length=255)
     timestamp = models.DateTimeField(default=datetime.now)
       
-def __str__(self):
-     return self.message
+    def __str__(self):
+        return self.message
+
+    class Meta:
+        permissions = [
+            ("get_notifications", "Can get notifications"),
+            ("clear_notifications", "Can clear notifications"),
+        ]
 
 # Für Special offers
 class SpecialOffer(models.Model):
@@ -58,3 +83,8 @@ class SpecialOffer(models.Model):
 
     def __str__(self):
         return self.title
+    
+    class Meta:
+        permissions = [
+            ("special_offer", "Can create special offers"),
+        ]

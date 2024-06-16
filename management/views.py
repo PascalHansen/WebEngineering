@@ -42,7 +42,6 @@ def seat_plan(request):
     return render(request, 'management/seat_plan.html', context)
 
 # Promotion Management
-@permission_required('management.promotion_list', raise_exception=True)
 def promotion_list(request):
     promotions = Promotion.objects.filter(is_active=True)
     return render(request, 'management/promotion_list.html', {'promotions': promotions})
@@ -70,7 +69,6 @@ def promotion_edit(request, pk):
         form = PromotionForm(instance=promotion)
     return render(request, 'management/promotion_form.html', {'form': form})
 
-@permission_required('management.dish_list', raise_exception=True)
 def dish_list(request):
     dishes = Dish.objects.filter(is_available=True)
     return render(request, 'management/dish_list.html', {'dishes': dishes})
@@ -117,8 +115,7 @@ def create_special_offer(request):
         form = SpecialOfferForm(request.POST)
         if form.is_valid():
             special_offer = form.save()
-            # Optional: Perform additional actions upon successful save
-            return redirect('success-url-name')  # Redirect to a success page
+            return redirect('management/special_offer.html')
     else:
         form = SpecialOfferForm()
     

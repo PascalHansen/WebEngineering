@@ -1,6 +1,6 @@
 from django.views.generic import ListView
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Restaurant, Booking
+from .models import Restaurant, Booking, Menu, Photo
 from users.models import CustomerProfile
 from reviews.models import Feedback
 from django.contrib.auth.decorators import permission_required

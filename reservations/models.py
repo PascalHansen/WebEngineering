@@ -18,3 +18,12 @@ class Reservations(models.Model):
 
     def __str__(self):
         return f'Reservation for {self.party_size} at {self.restaurant} on {self.date} at {self.time}'
+    
+    class Meta:
+        permissions = [
+            ("view_reservationlist", "Can view the list of reservations"),
+            ("view_reservationdetail", "Can view the detail of a reservation"),
+            ("change_reservation", "Can edit reservations"),
+            ("add_reservation", "Can add reservations"),
+            ("delete_reservation", "Can delete reservations"),
+        ]

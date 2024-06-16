@@ -14,6 +14,11 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+    
+    class Meta:
+        permissions = [
+            ("profile_view", "Can view profiles"),
+        ]
 
 class CustomerProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
