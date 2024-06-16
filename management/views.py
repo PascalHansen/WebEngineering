@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Table, Promotion, Dish, Notification
+from .models import Table, Promotion, Dish, Notification, SpecialOffer
 from reservations.models import Reservations
-from .forms import PromotionForm, DishForm
+from .forms import PromotionForm, DishForm, SpecialOfferForm
 from django.contrib.auth.decorators import permission_required
 
 # Tisch Management
@@ -110,3 +110,16 @@ def clear_notifications(request):
         Notification.objects.all().delete()
     
     return redirect('notification_list')
+
+@permission_required('management.special_offer', raise_exception=True)
+def create_special_offer(request):
+    if request.method == 'POST':
+        form = SpecialOfferForm(request.POST)
+        if form.is_valid():
+            special_offer = form.save()
+            # Optional: Perform additional actions upon successful save
+            return redirect('success-url-name')  # Redirect to a success page
+    else:
+        form = SpecialOfferForm()
+    
+    return render(request, 'management/special_offer.html', {'form': form})

@@ -3,7 +3,8 @@ from django.contrib.contenttypes.models import ContentType
 from reservations.models import Reservations
 from reviews.models import Review
 from restaurants.models import Restaurant, Menu, Photo, Booking
-from management.models import Table, Promotion, Dish, Notification
+from management.models import Table, Promotion, Dish, Notification, SpecialOffer
+from users.models import CustomerProfile
 
 # Erstellen der Gruppen
 customer_group, created = Group.objects.get_or_create(name='Customer')
@@ -102,9 +103,9 @@ can_generate_report = Permission.objects.get(
     content_type=restaurant_content_type,
 )
 
-# Management (Tische und Notifications)
-management_content_type = ContentType.objects.get_for_model(Table, Promotion, Dish, Notification)
-# Florian morgen noch Fragen, wer welche Berechtigungen braucht
+# Management (Tische und Notifications, + Marketing)
+management_content_type = ContentType.objects.get_for_model(Table, Promotion, Dish, Notification, SpecialOffer)
+
 table_list = Permission.objects.get(
     codename='table_list',
     content_type=management_content_type,
@@ -160,15 +161,25 @@ can_clear_notifications = Permission.objects.get(
     content_type=management_content_type,
 )
 
-can_access_edit = Permission.objects.get(
-    codename='access_edit',
+can_create_specialoffer = Permission.objects.get(
+    codename='special_offer',
     content_type=management_content_type,
 )
+
+# Für User
+users_content_type = ContentType.objects.get_for_model(CustomerProfile)
+
+can_view_profile = Permission.objects.get(
+    codename='profile_view',
+    content_type=users_content_type,
+)
+
 # Berechtigungen zu Gruppen hinzufügen
-customer_group.permissions.add(can_view_reservationlist, can_view_reservationdetail, can_add_reservation, can_add_review, can_delete_review)
+customer_group.permissions.add(can_view_reservationlist, can_view_reservationdetail, can_add_reservation, can_add_review, can_delete_review, can_view_profile)
 owner_group.permissions.add(can_view_reservationlist, can_view_reservationdetail, can_edit_reservation, can_delete_reservation, owner_dashboard, can_create_restaurant, 
                             can_update_restaurant, can_update_menu, can_update_photo, can_delete_restaurant, can_get_notifications, can_change_status, seat_plan, 
-                            promotion_list, can_promotion_create, can_promotion_edit, dish_list, can_dish_create, can_dish_edit, can_clear_notifications, can_access_edit)
+                            promotion_list, can_promotion_create, can_promotion_edit, dish_list, can_dish_create, can_dish_edit, can_clear_notifications,
+                            can_view_profile)
 marketing_group.permissions.add(customer_data, trend_analysis, can_generate_report)
 staff_group.permissions.add()
 

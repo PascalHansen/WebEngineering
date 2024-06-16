@@ -13,8 +13,8 @@
         <a href="{% url 'search_restaurants' %}">Search</a>
         
         {% if request.user.is_authenticated %}
-            {% if user|is_member:"Restaurant Manager" %}
-                    <a href="{% url 'Create_restaurant' %}">Edit Restaurant</a> <!-- Nur für Restaurant Manager -->
+            {% if user|is_member:"manager" %}
+                    <a href="{% url 'create_restaurant' %}">Edit Restaurant</a> <!-- Nur für Restaurant Manager -->
             {% endif %}
         {% else %}
         {% endif %}

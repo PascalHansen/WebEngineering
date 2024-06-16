@@ -46,3 +46,15 @@ class Notification(models.Model):
       
 def __str__(self):
      return self.message
+
+# Für Special offers
+class SpecialOffer(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    discount_rate = models.DecimalField(max_digits=5, decimal_places=2)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    terms_and_conditions = models.TextField()
+
+    def __str__(self):
+        return self.title
