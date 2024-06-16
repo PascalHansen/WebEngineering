@@ -114,11 +114,14 @@ def restaurant_detail(request, pk):
 def delete_restaurant(request, pk):
     restaurant = get_object_or_404(Restaurant, pk=pk)
     
-    if request.method == "POST":
-        restaurant.delete()
-        messages.success(request, "Restaurant deleted successfully.")
-        return redirect('dashboard')
-
+    if restaurant.user == request.user:
+        if request.method == "POST":
+           restaurant.delete()
+           messages.success(request, "Restaurant deleted successfully.")
+           return redirect('dashboard')
+    else:
+        return render(request, 'restaurants/forbidden.html')
+    
     return render(request, 'restaurants/delete_restaurant_confirm.html', {'restaurant': restaurant})
 
 # Kundendaten einsehen

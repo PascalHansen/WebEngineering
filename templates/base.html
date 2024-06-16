@@ -5,16 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Reservation Service{% endblock %}</title>
     {% load static %}
+    {% load custom_tags %}
     <link rel="stylesheet" href="{% static 'reservation/css/base_styles.css' %}">
 </head>
 <body>
     <div class="navbar">
         <a href="{% url 'search_restaurants' %}">Search</a>
         
+        {% if request.user.is_authenticated %}
+            {% if user|is_member:"Restaurant Manager" %}
+                    <a href="{% url 'Create_restaurant' %}">Edit Restaurant</a> <!-- Nur für Restaurant Manager -->
+            {% endif %}
+        {% else %}
+        {% endif %}
+
         <div class="navbar-right">
             {% if request.user.is_authenticated %}
                 <a href="{% url 'profile' %}">Profile</a> 
-                <a href="{% url 'logout' %}">Logout</a>
+                <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" style="background: none; border: none; color: blue; cursor: pointer; text-decoration: underline; padding: 0;">
+                        Logout
+                    </button>
+                </form>
             {% else %}
                 <a href="{% url 'login' %}">Login</a>
                 <a href="{% url 'register' %}">Register</a>

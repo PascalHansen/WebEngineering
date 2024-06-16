@@ -160,11 +160,15 @@ can_clear_notifications = Permission.objects.get(
     content_type=management_content_type,
 )
 
+can_access_edit = Permission.objects.get(
+    codename='access_edit',
+    content_type=management_content_type,
+)
 # Berechtigungen zu Gruppen hinzufügen
 customer_group.permissions.add(can_view_reservationlist, can_view_reservationdetail, can_add_reservation, can_add_review, can_delete_review)
 owner_group.permissions.add(can_view_reservationlist, can_view_reservationdetail, can_edit_reservation, can_delete_reservation, owner_dashboard, can_create_restaurant, 
                             can_update_restaurant, can_update_menu, can_update_photo, can_delete_restaurant, can_get_notifications, can_change_status, seat_plan, 
-                            promotion_list, can_promotion_create, can_promotion_edit, dish_list, can_dish_create, can_dish_edit, can_clear_notifications)
+                            promotion_list, can_promotion_create, can_promotion_edit, dish_list, can_dish_create, can_dish_edit, can_clear_notifications, can_access_edit)
 marketing_group.permissions.add(customer_data, trend_analysis, can_generate_report)
 staff_group.permissions.add()
 
