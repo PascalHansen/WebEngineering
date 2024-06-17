@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -141,3 +142,7 @@ LOGIN_REDIRECT_URL = '/'  # Hier wird der Benutzer zur Startseite umgeleitet
 LOGOUT_REDIRECT_URL = '/' 
 
 LOGIN_URL = '/users/login/'  # Standard-Login-URL
+
+MEDIA_URL = '/media/' # Für Restaurant Bilder laden
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

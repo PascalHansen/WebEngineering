@@ -7,7 +7,7 @@ class Restaurant(models.Model):
     name = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
     cuisine = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     opening_hours = models.CharField(max_length=100, blank=True)
     contact_info = models.CharField(max_length=100, blank=True)
     next_available_reservation = models.DateTimeField()

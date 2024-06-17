@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from .models import CustomUser
+from .models import CustomUser, CustomerProfile
 
 # Form für Login
 class CustomLoginForm(AuthenticationForm):
@@ -10,8 +10,8 @@ class CustomLoginForm(AuthenticationForm):
 # Form für Registrierung
 class CustomUserCreationForm(UserCreationForm):
     ROLE_CHOICES = [
-        ('customer', 'Customer'),
-        ('manager', 'Restaurant Manager'),
+        ('Customer', 'Customer'),
+        ('RestaurantManager', 'Restaurant Manager'),
       # ('staff', 'Staff Member'), # Staff Member derzeit ungenutzt, aber für Scalability bereits angelegt
         
         # Marketing Member Rolle muss vom Admin separat vergeben werden, um Sicherheitslücken zu vermeiden
@@ -34,5 +34,5 @@ class CustomUserCreationForm(UserCreationForm):
     
 class CustomUserChangeForm(forms.ModelForm):
     class Meta:
-        model = CustomUser
-        fields = ['email', 'username']  # Füge hier alle Felder hinzu, die der Nutzer bearbeiten können soll
+        model = CustomerProfile
+        fields = ['age', 'gender', 'preferences']  # Füge hier alle Felder hinzu, die der Nutzer bearbeiten können soll

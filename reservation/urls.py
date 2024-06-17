@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
 from management import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +31,8 @@ urlpatterns = [
     path('', include('restaurants.urls')), 
     path('management/', views.table_list, name='table_list'),
     path('management/<int:table_id>/change_status/', views.change_status, name='change_status'),
+    path('', TemplateView.as_view(template_name='base.html'), name='home'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

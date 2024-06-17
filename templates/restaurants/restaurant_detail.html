@@ -22,7 +22,7 @@
     <h2>Photos</h2>
     <ul>
         {% for photo in photos %}
-            <li><img src="{{ photo.image.url }}" alt="{{ photo.description }}"></li>
+            <li><img src="{{ photo.image.url }}" alt="{{ photo.description }}" style="max-width: 300px; height: auto;"></li>
         {% endfor %}
     </ul>
 

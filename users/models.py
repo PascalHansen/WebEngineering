@@ -5,12 +5,12 @@ from django.db import models
 
 class CustomUser(AbstractUser):
     USER_ROLES = [
-        ('customer', 'Customer'),
-        ('manager', 'Restaurant Manager'),
-        ('marketing', 'Marketing'),
-        ('staff', 'Staff'), # Aktuell ungenutzt, aber für Scalability bereits implementiert. So kann es bei potentiellen zukünftigen Bedarf genutzt werden
+        ('Customer', 'Customer'),
+        ('RestaurantManager', 'Restaurant Manager'),
+        ('Marketing', 'Marketing'),
+        ('Staff', 'Staff'), # Aktuell ungenutzt, aber für Scalability bereits implementiert. So kann es bei potentiellen zukünftigen Bedarf genutzt werden
     ]
-    role = models.CharField(max_length=25, choices=USER_ROLES, default='customer')
+    role = models.CharField(max_length=25, choices=USER_ROLES, default='Customer')
 
     def __str__(self):
         return self.username

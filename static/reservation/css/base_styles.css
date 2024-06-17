@@ -23,3 +23,19 @@
     .navbar-right {
         float: right;
     }
+
+    .logout {
+        background-color: goldenrod;
+        overflow: auto;
+        float: right;
+        display: block;
+        color: dimgray;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+        font-weight: bolder;
+    }
+
+    .logout:hover {
+         background-color: lightblue; /* Optional: eine leicht sichtbare Umrandung beim Hover */
+    }
