@@ -5,13 +5,13 @@ from datetime import datetime
 from .models import Reservations
 from management.models import Notification
 
-@permission_required('reservation_list', raise_exception=True)
+@permission_required('reservation.reservation_list', raise_exception=True)
 def reservation_list(request):
     reservations = Reservations.objects.all()
     notifications = Notification.objects.all().order_by('-id')  
     return render(request, 'reservations/reservation_list.html', {'reservations': reservations, 'notifications': notifications})
 
-@permission_required('add_reservation', raise_exception=True)
+@permission_required('reservation.add_reservation', raise_exception=True)
 def reservation_add(request):
     if request.method == 'POST':
         form = ReservationForm(request.POST)
@@ -24,12 +24,12 @@ def reservation_add(request):
         form = ReservationForm()
     return render(request, 'reservations/reservation_form.html', {'form': form})
 
-@permission_required('view_reservationdetail', raise_exception=True)
+@permission_required('reservation.view_reservationdetail', raise_exception=True)
 def reservation_detail(request, pk):
     reservation = get_object_or_404(Reservations, pk=pk)
     return render(request, 'reservations/reservation_detail.html', {'reservation': reservation})
 
-@permission_required('change_reservation', raise_exception=True)
+@permission_required('reservation.change_reservation', raise_exception=True)
 def reservation_edit(request, pk):
     reservation = Reservations.objects.get(pk=pk)
     if request.method == 'POST':
@@ -44,7 +44,7 @@ def reservation_edit(request, pk):
     
     return render(request, 'reservations/reservation_edit.html', {'form': form, 'reservation': reservation})
 
-@permission_required('delete_reservation', raise_exception=True)
+@permission_required('reservation.delete_reservation', raise_exception=True)
 def reservation_delete(request, pk):
     reservation = Reservations.objects.get(pk=pk)
     message = f"{datetime.now()} - {reservation.guest_name} - deleted reservation for table: {reservation.table.table_number}"

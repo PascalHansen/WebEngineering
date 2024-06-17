@@ -16,6 +16,15 @@
         
         {% if request.user.is_authenticated %}
                 <a href="{% url 'dashboard' %}">Dashboard</a>
+                <div class="dropdown">
+                    <button class="dropbtn">Actions</button>
+                    <div class="dropdown-content">
+                        <a href="{% url 'reservation_list' %}" target="_blank">Reservations</a>
+                        <a href="{% url 'table_list' %}">Tables</a>
+                        <a href="{% url 'seat_plan' %}" target="_blank">Seat Plan</a>
+                        <a href="{% url 'promotion_list' %}" target="_blank">Promotions</a>
+                    </div>
+                </div>
         {% else %}
         {% endif %}
 

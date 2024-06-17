@@ -10,10 +10,10 @@ from restaurants.models import Restaurant, Menu, Photo, Booking
 from management.models import Table, Promotion, Dish, Notification, SpecialOffer
 
 # Erstellen der Gruppen
-customer_group, _ = Group.objects.get_or_create(name='Customer')
-owner_group, _ = Group.objects.get_or_create(name='Restaurant Manager')
-marketing_group, _ = Group.objects.get_or_create(name='Marketing')
-staff_group, _ = Group.objects.get_or_create(name='Staff') # Bisher ungenutzt
+customer_group, created = Group.objects.get_or_create(name='Customer')
+owner_group, created = Group.objects.get_or_create(name='Restaurant Manager')
+marketing_group, created = Group.objects.get_or_create(name='Marketing')
+staff_group, created = Group.objects.get_or_create(name='Staff') # Bisher ungenutzt
 
 # Berechtigungen definieren
 
