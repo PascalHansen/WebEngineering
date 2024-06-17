@@ -1,12 +1,13 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group
 from django.db import models
+
 
 # Create your models here.
 
 class CustomUser(AbstractUser):
     USER_ROLES = [
         ('Customer', 'Customer'),
-        ('RestaurantManager', 'Restaurant Manager'),
+        ('Restaurant Manager', 'Restaurant Manager'),
         ('Marketing', 'Marketing'),
         ('Staff', 'Staff'), # Aktuell ungenutzt, aber für Scalability bereits implementiert. So kann es bei potentiellen zukünftigen Bedarf genutzt werden
     ]
@@ -14,11 +15,24 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
-    
-    class Meta:
-        permissions = [
-            ("profile_view", "Can view profiles"),
-        ]
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        # Mapping von Rolle zu Gruppe
+        role_to_group = {
+            'Customer': 'Customer',
+            'Restaurant Manager': 'Restaurant Manager',
+            'Marketing': 'Marketing',
+            'Staff': 'Staff',
+        }
+
+        if self.role in role_to_group:
+            group_name = role_to_group[self.role]
+            group, created = Group.objects.get_or_create(name=group_name)
+
+            # Füge den Benutzer der neuen Gruppe hinzu
+            self.groups.add(group)
 
 class CustomerProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)

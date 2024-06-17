@@ -38,13 +38,14 @@ def search_restaurants(request):
     return render(request, 'restaurants/search_results.html', context)
 
 # Dashboard einsehen
-@permission_required('owner_dashboard, raise_exception=True')
+@permission_required('restaurants.owner_dashboard', raise_exception=True)
 def dashboard(request):
     restaurants = Restaurant.objects.filter(owner=request.user)
     return render(request, 'restaurants/owner_dashboard.html', {'restaurants': restaurants})
+    
 
 # Restaurant erstellen
-@permission_required('create_restaurant', raise_exception=True)
+@permission_required('restaurants.create_restaurant', raise_exception=True)
 def create_restaurant(request):
     if request.method == 'POST':
         form = RestaurantForm(request.POST)
@@ -58,7 +59,7 @@ def create_restaurant(request):
     return render(request, 'restaurants/create_restaurant.html', {'form': form})
 
 # Restaurant updaten
-@permission_required('update_restaurant', raise_exception=True)
+@permission_required('restaurants.update_restaurant', raise_exception=True)
 def update_restaurant(request, pk):
     restaurant = Restaurant.objects.get(pk=pk, owner=request.user)
     if request.method == 'POST':
@@ -71,7 +72,7 @@ def update_restaurant(request, pk):
     return render(request, 'restaurants/update_restaurant.html', {'form': form})
 
 # Menü updaten
-@permission_required('update_menu', raise_exception=True)
+@permission_required('restaurants.update_menu', raise_exception=True)
 def update_menu(request, pk):
     restaurant = Restaurant.objects.get(pk=pk, owner=request.user)
     if request.method == 'POST':
@@ -86,7 +87,7 @@ def update_menu(request, pk):
     return render(request, 'restaurants/update_menu.html', {'form': form})
 
 # Foto updaten
-@permission_required('update_photo', raise_exception=True)
+@permission_required('restaurants.update_photo', raise_exception=True)
 def update_photo(request, pk):
     restaurant = Restaurant.objects.get(pk=pk, owner=request.user)
     if request.method == 'POST':
@@ -113,7 +114,7 @@ def restaurant_detail(request, pk):
     })
 
 # Restaurants löschen
-@permission_required('delete_restaurant', raise_exception=True)
+@permission_required('restaurants.delete_restaurant', raise_exception=True)
 def delete_restaurant(request, pk):
     restaurant = get_object_or_404(Restaurant, pk=pk)
     
@@ -128,7 +129,7 @@ def delete_restaurant(request, pk):
     return render(request, 'restaurants/delete_restaurant_confirm.html', {'restaurant': restaurant})
 
 # Kundendaten einsehen
-@permission_required('customer_data', raise_exception=True)
+@permission_required('restaurants.customer_data', raise_exception=True)
 def customer_data(request):
     today = datetime.date.today()
     bookings = Booking.objects.all()
@@ -142,7 +143,7 @@ def customer_data(request):
     })
 
 # Trends einsehen
-@permission_required('trend_analysis', raise_exception=True)
+@permission_required('restaurants.trend_analysis', raise_exception=True)
 def trend_analysis(request):
     today = datetime.date.today()
     popular_times = Booking.objects.values('date').annotate(count=Count('id')).order_by('-count')
@@ -158,7 +159,7 @@ def trend_analysis(request):
     })
 
 # Berichte erstellen (??)
-@permission_required('generate_report', raise_exception=True)
+@permission_required('restaurants.generate_report', raise_exception=True)
 def generate_report(request):
     # Muss noch implementiert werden
     return render(request, 'restaurants/generate_report.html')

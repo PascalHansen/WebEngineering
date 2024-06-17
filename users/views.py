@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth import views as auth_views
 from .forms import CustomUserCreationForm, CustomLoginForm
-from django.contrib.auth.decorators import permission_required, login_required
+from django.contrib.auth.decorators import login_required
 from .forms import CustomUserChangeForm, CustomerProfile
 from django.contrib.auth.views import LogoutView
 
@@ -26,17 +26,15 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
 
-@permission_required('profile_view', raise_exception=True)
+@login_required
 def profile_view(request):
-    if request.method == 'POST':
-        form = CustomUserChangeForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('profile') 
-    else:
-        form = CustomUserChangeForm(instance=request.user)
-    
-    return render(request, 'users/profile.html', {'form': form})
+    user = request.user
+    customer_profile = CustomerProfile.objects.filter(user=user).first()
+    context = {
+        'user': user,
+        'customer_profile': customer_profile,
+    }
+    return render(request, 'users/profile.html', context)
 
 @login_required
 def edit_profile(request):
@@ -49,7 +47,7 @@ def edit_profile(request):
             profile = form.save(commit=False)
             profile.user = user
             profile.save()
-        #    return redirect('success')
+            return redirect('success')
     else:
         form = CustomUserChangeForm(instance=customer_profile)
     
@@ -60,9 +58,10 @@ def edit_profile(request):
     }
     return render(request, 'users/success.html', context)
 
+def success(request):
+    return render(request, 'users/success.html')
+
 class CustomLogoutView(LogoutView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     
-def permission_denied_view(request):
-    return render(request, 'users/access_denied.html', status=403)

@@ -8,18 +8,18 @@ from reservations.models import Reservations
 from reviews.models import Review
 from restaurants.models import Restaurant, Menu, Photo, Booking
 from management.models import Table, Promotion, Dish, Notification, SpecialOffer
-from users.models import CustomUser
 
 # Erstellen der Gruppen
 customer_group, created = Group.objects.get_or_create(name='Customer')
-owner_group, created = Group.objects.get_or_create(name='RestaurantManager')
+owner_group, created = Group.objects.get_or_create(name='Restaurant Manager')
 marketing_group, created = Group.objects.get_or_create(name='Marketing')
 staff_group, created = Group.objects.get_or_create(name='Staff') # Bisher ungenutzt
 
 # Berechtigungen definieren
 
 # Für Reservierungen
-reservations_content_type = ContentType.objects.get_for_model(Reservations, Notification)
+reservations_content_type = ContentType.objects.get_for_model(Reservations)
+reservations_content_type = ContentType.objects.get_for_model(Notification)
 
 can_view_reservationlist, created = Permission.objects.get_or_create(
     codename='reservation_list',
@@ -60,8 +60,10 @@ can_delete_review, created = Permission.objects.get_or_create(
 )
 
 # Für Restaurant Management
-restaurant_content_type = ContentType.objects.get_for_model(Restaurant, Menu)
-restaurant_content_type = ContentType.objects.get_for_model(Photo, Booking)
+restaurant_content_type = ContentType.objects.get_for_model(Restaurant)
+restaurant_content_type = ContentType.objects.get_for_model(Menu)
+restaurant_content_type = ContentType.objects.get_for_model(Photo)
+restaurant_content_type = ContentType.objects.get_for_model(Booking)
 
 owner_dashboard, created = Permission.objects.get_or_create(
     codename='owner_dashboard',
@@ -109,8 +111,10 @@ can_generate_report, created = Permission.objects.get_or_create(
 )
 
 # Management (Tische und Notifications, + Marketing)
-management_content_type = ContentType.objects.get_for_model(Table, Promotion)
-management_content_type = ContentType.objects.get_for_model(Dish, Notification)
+management_content_type = ContentType.objects.get_for_model(Table)
+management_content_type = ContentType.objects.get_for_model(Promotion)
+management_content_type = ContentType.objects.get_for_model(Dish)
+management_content_type = ContentType.objects.get_for_model(Notification)
 management_content_type = ContentType.objects.get_for_model(SpecialOffer)
 
 table_list, created = Permission.objects.get_or_create(
@@ -163,21 +167,13 @@ can_create_specialoffer, created = Permission.objects.get_or_create(
     content_type=management_content_type,
 )
 
-# Für User
-users_content_type = ContentType.objects.get_for_model(CustomUser)
-
-can_view_profile, created = Permission.objects.get_or_create(
-    codename='profile_view',
-    content_type=users_content_type,
-)
-
 # Berechtigungen zu Gruppen hinzufügen
-customer_group.permissions.add(can_view_reservationlist, can_view_reservationdetail, can_add_reservation, can_add_review, can_delete_review, can_view_profile)
-owner_group.permissions.add(can_view_reservationlist, can_view_reservationdetail, can_edit_reservation, can_delete_reservation, owner_dashboard, can_create_restaurant, 
+customer_group.permissions.set([can_view_reservationlist, can_view_reservationdetail, can_add_reservation, can_add_review, can_delete_review])
+owner_group.permissions.set([can_view_reservationlist, can_view_reservationdetail, can_edit_reservation, can_delete_reservation, owner_dashboard, can_create_restaurant, 
                             can_update_restaurant, can_update_menu, can_update_photo, can_delete_restaurant, can_get_notifications, can_change_status, seat_plan, 
-                            can_promotion_create, can_promotion_edit, can_dish_create, can_dish_edit, can_clear_notifications, can_view_profile)
-marketing_group.permissions.add(customer_data, trend_analysis, can_generate_report)
-staff_group.permissions.add()
+                            can_promotion_create, can_promotion_edit, can_dish_create, can_dish_edit, can_clear_notifications])
+marketing_group.permissions.set([customer_data, trend_analysis, can_generate_report])
+staff_group.permissions.set([])
 
 customer_group.save()
 owner_group.save()
