@@ -29,8 +29,6 @@ urlpatterns = [
     path('management/', include('management.urls')),
     path('', TemplateView.as_view(template_name='base.html'), name='base'),
     path('', include('restaurants.urls')), 
-    path('management/', views.table_list, name='table_list'),
-    path('management/<int:table_id>/change_status/', views.change_status, name='change_status'),
     path('', TemplateView.as_view(template_name='base.html'), name='home'),
 ]
 

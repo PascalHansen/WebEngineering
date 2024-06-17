@@ -14,7 +14,7 @@
     <ul>
         {% for restaurant in restaurants %}
             <li>
-                <strong>{{ restaurant.name }}</strong><br>
+                <a href="{% url 'restaurant_detail' restaurant.pk %}">Name: {{ restaurant.name }}</a><br>
                 Location: {{ restaurant.location }}<br>
                 Cuisine: {{ restaurant.cuisine }}<br>
                 Next Available Reservation: {{ restaurant.next_available_reservation }}<br>

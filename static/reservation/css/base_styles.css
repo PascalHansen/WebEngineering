@@ -37,7 +37,7 @@
     }
 
     .logout:hover {
-         background-color: lightblue; /* Optional: eine leicht sichtbare Umrandung beim Hover */
+         background-color: lightblue;
     }
 
     .dropdown {
@@ -45,7 +45,7 @@
         overflow: hidden;
     }
     
-    .dropdown .dropbtn {
+    .dropbtn {
         font-weight: bolder;
         color: dimgray;
         padding: 14px 20px;
@@ -57,7 +57,7 @@
         display: block;
     }
     
-    .dropdown .dropbtn:hover {
+    .dropbtn:hover {
         background-color: lightblue;
     }
     
