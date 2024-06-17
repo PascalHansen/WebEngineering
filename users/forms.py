@@ -11,7 +11,7 @@ class CustomLoginForm(AuthenticationForm):
 class CustomUserCreationForm(UserCreationForm):
     ROLE_CHOICES = [
         ('Customer', 'Customer'),
-        ('RestaurantManager', 'Restaurant Manager'),
+        ('Restaurant Manager', 'Restaurant Manager'),
       # ('staff', 'Staff Member'), # Staff Member derzeit ungenutzt, aber für Scalability bereits angelegt
         
         # Marketing Member Rolle muss vom Admin separat vergeben werden, um Sicherheitslücken zu vermeiden

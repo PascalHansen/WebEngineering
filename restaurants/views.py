@@ -38,10 +38,11 @@ def search_restaurants(request):
     return render(request, 'restaurants/search_results.html', context)
 
 # Dashboard einsehen
-@permission_required('owner_dashboard, raise_exception=True')
+@permission_required('owner_dashboard', raise_exception=True)
 def dashboard(request):
     restaurants = Restaurant.objects.filter(owner=request.user)
     return render(request, 'restaurants/owner_dashboard.html', {'restaurants': restaurants})
+    
 
 # Restaurant erstellen
 @permission_required('create_restaurant', raise_exception=True)
