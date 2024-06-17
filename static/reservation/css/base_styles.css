@@ -1,0 +1,87 @@
+    body {
+        margin: 0;
+        font-family: Helvetica, sans-serif;
+        background-color: lightblue;
+    }
+    .navbar {
+        background-color: goldenrod;
+        overflow: auto;
+    }
+    .navbar a {
+        float: left;
+        display: block;
+        color: dimgray;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+        font-weight: bolder;
+    }
+    .navbar a:hover {
+        background-color: lightblue;
+    }
+    .navbar-right {
+        float: right;
+    }
+
+    .logout {
+        background-color: goldenrod;
+        overflow: auto;
+        float: right;
+        display: block;
+        color: dimgray;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+        font-weight: bolder;
+    }
+
+    .logout:hover {
+         background-color: lightblue;
+    }
+
+    .dropdown {
+        float: left;
+        overflow: hidden;
+    }
+    
+    .dropdown .dropbtn {
+        font-weight: bolder;
+        color: dimgray;
+        padding: 14px 20px;
+        background-color: goldenrod;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+    }
+    
+    .dropdown .dropbtn:hover {
+        background-color: lightblue;
+    }
+    
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: goldenrod;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        left: 0; 
+    }
+    
+    .dropdown-content a {
+        color: dimgray;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+    }
+    
+    .dropdown-content a:hover {
+        background-color: lightblue;
+    }
+    
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }

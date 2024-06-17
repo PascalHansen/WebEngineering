@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Reservation List{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>List of all reservations</h2>
+    <table class="table">
+        <thead>
+            <tr> <!-- Hier müssen noch die Reservations Model anpassungen hinzugefügt werden -->
+                <th>Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Party size</th>
+                <th>Special requests</th>
+                <th>Table number</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.guest_name }}</td>
+                <td>{{ reservation.reservation_date }}</td>
+                <td>{{ reservation.reservation_time }}</td>
+                <td>{{ reservation.guest_count }}</td>
+                <td>{{ reservation.special_requests }}</td>
+                <td>{{ reservation.table.table_number }}</td>
+                <td>
+                    <a href="{% url 'reservation_edit' reservation.id %}" class="btn btn-primary">Change</a>
+                    <a href="{% url 'reservation_delete' reservation.id %}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+ <!--  <a href="{% url 'reservation_add' %}" class="btn btn-success">Add new reservation</a> --> 
+</div>
+{% endblock %}

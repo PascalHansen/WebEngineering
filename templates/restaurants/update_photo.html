@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Photo{% endblock %}
+
+{% block content %}
+<h1>Update Photo</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="upload">Save</button>
+    </form>
+
+<h2>Uploaded Photos</h2>
+<div class="photo-container">
+    {% for photo in photos %}
+        <div>
+            <img src="{{ photo.image.url }}" alt="{{ photo.description }}" style="max-width: 300px; height: auto;">
+            <p>{{ photo.description }}</p>
+            <form method="post" action="">
+                {% csrf_token %}
+                <input type="hidden" name="photo_id" value="{{ photo.id }}">
+                <button type="submit" name="delete">Delete</button>
+            </form>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+.notification-box {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    max-height: 300px; 
+    overflow-y: scroll; 
+}
+
+.notification {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-weight: bold; 
+}
+
+.deleted {
+    color: red;
+    font-weight: bold; 
+}
+
+.changed {
+    color: blue;
+    font-weight: bold; 
+}
+
+.added {
+    color: green;
+    font-weight: bold; 
+}
+
+.btn-delete-all {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.btn-delete-all:hover {
+    background-color: darkred;
+}
