@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Success{% endblock %}
+
+{% block content %}
+<div>
+    <h1>Success!</h1>
+    <p>Successfully updated your profile.</p>
+ </div>
+ <a href="{% url 'profile' %}">Click here to return to your profile!</a>
+{% endblock %}

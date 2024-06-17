@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit dishes{% endblock %}
+
+{% block content %}
+<h1>Add & edit dishes</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    <a href="{% url 'dish_list' %}">Back to list</a>
+{% endblock %}

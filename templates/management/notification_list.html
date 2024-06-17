@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'management/css/notifications_list_styles.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Notifications</h1>
+    <div class="notification-box">
+        {% for notification in notifications %}
+            <div class="notification">
+                {% if "gelöscht" in notification.message %}
+                    <span class="deleted">{{ notification.message }}</span>
+                {% elif "geändert" in notification.message %}
+                    <span class="changed">{{ notification.message }}</span>
+                {% elif "hinzugefügt" in notification.message %}
+                    <span class="added">{{ notification.message }}</span>
+                {% else %}
+                    <span>{{ notification.message }}</span>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <form action="{% url 'clear_notifications' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn-delete-all">Clear notifications</button>
+    </form>
+</div>
+{% endblock %}

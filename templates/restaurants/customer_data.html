@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Data</title>
+</head>
+<body>
+    <h1>Customer Data</h1>
+    <h2>Demographics</h2>
+    <ul>
+        {% for demographic in demographics %}
+            <li>Age: {{ demographic.age }} - Gender: {{ demographic.gender }} - Count: {{ demographic.count }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Booking History</h2>
+    <ul>
+        {% for booking in bookings %}
+            <li>{{ booking.customer.username }} booked at {{ booking.restaurant.name }} on {{ booking.date }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Feedback</h2>
+    <ul>
+        {% for feedback in feedbacks %}
+            <li>{{ feedback.customer.username }} rated {{ feedback.restaurant.name }} {{ feedback.rating }}/5 - {{ feedback.comment }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
