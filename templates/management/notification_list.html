@@ -2,6 +2,10 @@
 
 {% block title %}Notifications{% endblock %}
 
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'management/css/notifications_list_styles.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="container">
     <h1>Notifications</h1>

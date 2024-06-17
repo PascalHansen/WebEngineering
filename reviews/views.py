@@ -32,3 +32,6 @@ def delete_review(request, review_id):
         return redirect('restaurant_detail', pk=review.restaurant_id)
     else:
         return render(request, 'reviews/forbidden.html')
+    
+def permission_denied_view(request):
+    return render(request, 'reviews/access_denied.html', status=403)

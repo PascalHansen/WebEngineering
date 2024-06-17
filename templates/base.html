@@ -4,16 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Reservation Service{% endblock %}</title>
+    <link rel="icon" href="/media/favicon.png">
     {% load static %}
     <link rel="stylesheet" href="{% static 'reservation/css/base_styles.css' %}">
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
     <div class="navbar">
+        <a href="{% url 'home' %}">Home</a>
         <a href="{% url 'search_restaurants' %}">Search</a>
         
+        {% if request.user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}">Dashboard</a>
+        {% else %}
+        {% endif %}
+
         <div class="navbar-right">
-            <a href="{% url 'login' %}">Login</a>
-            <a href="{% url 'register' %}">Register</a>
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'profile' %}">Profile</a> 
+                <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button class="navbar-item logout" type="submit"
+                    style="background-color: goldenrod; overflow: auto; float: right; display: block; color: dimgray; text-align: center; 
+                    padding: 14px 20px; text-decoration: none; font-weight: bolder; border: none"
+                    onmouseover="this.style.backgroundColor='lightblue';"
+                    onmouseout="this.style.backgroundColor='goldenrod';">
+                    Logout</button> <!-- Ging nur inline, über CSS gab es nur Fehler :( Generell war der Button komisch -->
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
         </div>
     </div>
 

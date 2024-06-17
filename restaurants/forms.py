@@ -5,6 +5,9 @@ class RestaurantForm(forms.ModelForm):
     class Meta:
         model = Restaurant
         fields = ['name', 'location', 'cuisine', 'description', 'contact_info', 'opening_hours', 'next_available_reservation']
+        widgets = {
+            'next_available_reservation': forms.DateInput(attrs={'type': 'date'}),
+        }
 
 class MenuForm(forms.ModelForm):
     class Meta:

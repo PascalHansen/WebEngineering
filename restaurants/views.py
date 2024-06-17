@@ -1,13 +1,14 @@
 from django.views.generic import ListView
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Restaurant, Booking
-from users.models import CustomerProfile
+from .models import Restaurant, Booking, Menu, Photo
+from users.models import CustomerProfile, CustomUser
 from reviews.models import Feedback
 from django.contrib.auth.decorators import permission_required
 from .forms import RestaurantForm, MenuForm, PhotoForm
 from django.db.models import Count
 import datetime
 from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 
 # Create your views here.
 def home(request):
@@ -37,13 +38,13 @@ def search_restaurants(request):
     return render(request, 'restaurants/search_results.html', context)
 
 # Dashboard einsehen
-@permission_required('restaurants.owner_dashboard', raise_exception=True)
+@permission_required('owner_dashboard, raise_exception=True')
 def dashboard(request):
     restaurants = Restaurant.objects.filter(owner=request.user)
     return render(request, 'restaurants/owner_dashboard.html', {'restaurants': restaurants})
 
 # Restaurant erstellen
-@permission_required('restaurants.create_restaurant', raise_exception=True)
+@permission_required('create_restaurant', raise_exception=True)
 def create_restaurant(request):
     if request.method == 'POST':
         form = RestaurantForm(request.POST)
@@ -57,7 +58,7 @@ def create_restaurant(request):
     return render(request, 'restaurants/create_restaurant.html', {'form': form})
 
 # Restaurant updaten
-@permission_required('restaurants.update_restaurant', raise_exception=True)
+@permission_required('update_restaurant', raise_exception=True)
 def update_restaurant(request, pk):
     restaurant = Restaurant.objects.get(pk=pk, owner=request.user)
     if request.method == 'POST':
@@ -70,7 +71,7 @@ def update_restaurant(request, pk):
     return render(request, 'restaurants/update_restaurant.html', {'form': form})
 
 # Menü updaten
-@permission_required('restaurants.update_menu', raise_exception=True)
+@permission_required('update_menu', raise_exception=True)
 def update_menu(request, pk):
     restaurant = Restaurant.objects.get(pk=pk, owner=request.user)
     if request.method == 'POST':
@@ -85,7 +86,7 @@ def update_menu(request, pk):
     return render(request, 'restaurants/update_menu.html', {'form': form})
 
 # Foto updaten
-@permission_required('restaurants.update_photo', raise_exception=True)
+@permission_required('update_photo', raise_exception=True)
 def update_photo(request, pk):
     restaurant = Restaurant.objects.get(pk=pk, owner=request.user)
     if request.method == 'POST':
@@ -102,6 +103,8 @@ def update_photo(request, pk):
 # Details einsehen
 def restaurant_detail(request, pk):
     restaurant = get_object_or_404(Restaurant, pk=pk)
+    menus = Menu.objects.filter(restaurant=restaurant)
+    photos = Photo.objects.filter(restaurant=restaurant)
     return render(request, 'restaurants/restaurant_detail.html', {
         'restaurant': restaurant,
         'menus': restaurant.menus.all(),
@@ -110,19 +113,22 @@ def restaurant_detail(request, pk):
     })
 
 # Restaurants löschen
-@permission_required('restaurants.delete_restaurant', raise_exception=True)
+@permission_required('delete_restaurant', raise_exception=True)
 def delete_restaurant(request, pk):
     restaurant = get_object_or_404(Restaurant, pk=pk)
     
-    if request.method == "POST":
-        restaurant.delete()
-        messages.success(request, "Restaurant deleted successfully.")
-        return redirect('dashboard')
-
+    if restaurant.owner == request.user:
+        if request.method == "POST":
+           restaurant.delete()
+           messages.success(request, "Restaurant deleted successfully.")
+           return redirect('dashboard')
+    else:
+        return render(request, 'restaurants/access_denied.html')
+    
     return render(request, 'restaurants/delete_restaurant_confirm.html', {'restaurant': restaurant})
 
 # Kundendaten einsehen
-@permission_required('restaurants.customer_data', raise_exception=True)
+@permission_required('customer_data', raise_exception=True)
 def customer_data(request):
     today = datetime.date.today()
     bookings = Booking.objects.all()
@@ -136,7 +142,7 @@ def customer_data(request):
     })
 
 # Trends einsehen
-@permission_required('restaurants.trend_analysis', raise_exception=True)
+@permission_required('trend_analysis', raise_exception=True)
 def trend_analysis(request):
     today = datetime.date.today()
     popular_times = Booking.objects.values('date').annotate(count=Count('id')).order_by('-count')
@@ -152,7 +158,7 @@ def trend_analysis(request):
     })
 
 # Berichte erstellen (??)
-@permission_required('restaurants.generate_report', raise_exception=True)
+@permission_required('generate_report', raise_exception=True)
 def generate_report(request):
     # Muss noch implementiert werden
     return render(request, 'restaurants/generate_report.html')
@@ -161,3 +167,6 @@ class RestaurantListView(ListView):
     model = Restaurant
     template_name = 'restaurants/restaurant_list.html'
     context_object_name = 'restaurants'
+
+def permission_denied_view(request):
+    return render(request, 'restaurants/access_denied.html', status=403)

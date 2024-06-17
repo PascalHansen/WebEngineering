@@ -16,6 +16,12 @@ class Review(models.Model):
 
     class Meta:
         ordering = ['-date_posted']
+    
+    class Meta:
+        permissions = [
+       #     ("add_review", "Can add reviews"),
+       #     ("delete_review", "Can delete reviews"),
+        ]
 
 class Feedback(models.Model):
     customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

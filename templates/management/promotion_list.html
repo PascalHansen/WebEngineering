@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1>Current promotions</h1>
-    <a href="{% url 'promotion_create' %}">Add new promotion</a>
+    <a href="{% url 'promotion_create' %}" class="btn new-promotion" >  Add new promotion</a>
     <div class="promotions">
         {% for promotion in promotions %}
             <div class="promotion">
@@ -14,7 +14,7 @@
                 <p>Special menu items: {{ promotion.special_menu_item }}</p>
                 <p>Loyalty points: {{ promotion.loyalty_points }}</p>
                 <p>Starting {{ promotion.start_date }} until {{ promotion.end_date }}</p>
-                <a href="{% url 'promotion_edit' promotion.pk %}">Edit</a>
+                <a href="{% url 'promotion_edit' promotion.pk %}" class="btn edit-promotion">Edit</a>
             </div>
         {% endfor %}
     </div>
